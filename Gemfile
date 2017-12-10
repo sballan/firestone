@@ -5,8 +5,11 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+# Added
 
-
+# Memoize methods, to cache responses
+gem 'memoist'
+# ODM for Mongo
 gem 'mongoid'
 
 # RAILS

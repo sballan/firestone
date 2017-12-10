@@ -1,25 +1,49 @@
-class MList
+class MList < MObject
   include Mongoid::Document
 
   field :data, type: Array, default: []
 
-  def pop
-    self.data.pop
-    save
+  def pop(fetch=true)
+		item = self.data.pop
+
+		if item.instance_of? BSON::ObjectId && fetch
+			item = MObject.find item 
+		end
+
+		save
+		item
   end
 
-  def push(str)
+	def push(str)
+		str = str.id if str.instance_of? BSON::ObjectId
     self.data.push(str)
     save
   end
 
-  def shift
-    self.data.shift
-    save
+  def shift(fetch=true)
+		item = self.data.shift
+
+		if item.instance_of? BSON::ObjectId && fetch
+			item = MObject.find item 
+		end
+		
+		save
+		item
   end
 
-  def unshift(str)
+	def unshift(str)
+		str = str.id if str.instance_of? BSON::ObjectId
     self.data.unshift(str)
     save
-  end
+	end
+	
+	def at(index, fetch=true)
+		item = self.data[index]
+
+		if item.instance_of? BSON::ObjectId && fetch
+			item = MObject.find item 
+		end
+
+		item
+	end
 end

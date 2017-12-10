@@ -1,17 +1,12 @@
-class MPath < MHash
+class MPath
 
-  has_one :mpath, as: :parent
-  field :name, type: String, default: ""
-  field :is_root, type: Boolean, default: false
+	belong_to :parent, class_name: "MPath", inverse_of: :children
+	has_many :children, class_name: "MPath", inverse_of: :parent
 
-  def full_path
-    name + parent.full_path
-  end
-
-  def add_child(str)
-    child = MPath.create({name: str})
-    self.set(str, child)
-  end
+  field :name, type: String
+	field :is_root, type: Boolean, default: false
+	
+	belongs_to: :data, polymorphic: true
 
   def self.create_path(root, path)
 

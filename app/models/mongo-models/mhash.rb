@@ -1,4 +1,4 @@
-class MHash
+class MHash < MObject
   include Mongoid::Document
 
   field :data, type: Hash
