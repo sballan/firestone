@@ -3,6 +3,6 @@
 
 class MObject
 	include Mongoid::Document
-	has_one: :mpath, as: :data
+	has_one :mpath, as: :data
 	
 end

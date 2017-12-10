@@ -1,12 +1,14 @@
 class MPath
-	belong_to :parent, class_name: "MPath", inverse_of: :children, validate: false
+	include Mongoid::Document
+	
+	belongs_to :parent, class_name: "MPath", inverse_of: :children, validate: false
 	has_many :children, class_name: "MPath", inverse_of: :parent, validate: false
 
-  field :name, type: String, validate: true
+  field :name, type: String
 	field :is_root, type: Boolean, default: false
 	
 	# Belongs to an MObject
-	belongs_to: :data, polymorphic: true
+	belongs_to :data, polymorphic: true
 
 	before_create do
 		if self.is_root
@@ -42,10 +44,10 @@ class MPath
 
 	def self.create_path(path_names)
 		root_name = path_names.shift
-		current = self.first_or_create(is_root: true, name: root_name)
+		current = self.first_or_create!(is_root: true, name: root_name)
 
 		path_names.each do |p|
-			current = self.first_or_create(parent: current, name: p)
+			current = self.first_or_create!(parent: current, name: p)
 		end
 	end
 
